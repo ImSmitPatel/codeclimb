@@ -1,0 +1,8 @@
+node_modules
+# Keep environment variables out of version control
+.env
+
+generated
+
+# temp files not need to upload
+temp.md
