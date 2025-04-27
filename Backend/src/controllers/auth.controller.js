@@ -3,7 +3,7 @@ import { db } from "../libs/db.js";
 import { UserRole } from "../generated/prisma/index.js";
 import jwt from "jsonwebtoken";
 
-export const register = async (req, res) => {
+const register = async (req, res) => {
     const {email, name, password} = req.body;
 
     try {
@@ -60,7 +60,7 @@ export const register = async (req, res) => {
     }
 };
 
-export const login = async (req, res) => {
+const login = async (req, res) => {
     const {email, password} = req.body;
 
     try {
@@ -116,7 +116,7 @@ export const login = async (req, res) => {
     }
 };
 
-export const logout = async (req, res) => {
+const logout = async (req, res) => {
     try {
         res.clearCookie("jwt", {
             httpOnly: true,
@@ -137,6 +137,25 @@ export const logout = async (req, res) => {
 
 };
 
-export const me = async (req, res) => {
-    res.send("Get current user");
+const getme = async (req, res) => {
+    try {
+        res.status(200).json({
+            success: true,
+            message: "User authenticated successfully",
+            user: req.user
+        })
+    } catch (error) {
+        console.error("Error getting user:", error);
+        res.status(500).json({
+            success: false,
+            message: "Error getting user"
+        });
+    }
 };
+
+export {
+    register,
+    login,
+    logout,
+    getme
+}
