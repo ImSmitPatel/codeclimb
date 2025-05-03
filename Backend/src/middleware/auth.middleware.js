@@ -1,5 +1,6 @@
 import jwt from "jsonwebtoken";
 import { db } from "../libs/db.js";
+import { UserRole } from "../generated/prisma/index.js";
 
 const authMiddleware = async (req, res, next) => {
     try {
@@ -54,4 +55,32 @@ const authMiddleware = async (req, res, next) => {
     }
 }
 
-export { authMiddleware }
+const checkAdmin = async (req, res, next) => {
+    try {
+        const userId = req.user.id;
+        const user = await db.user.findUnique({
+            where: {
+                id: userId
+            }, select: {
+                role: true
+            }
+        })
+
+        if(!user || user.role !== UserRole.ADMIN){
+            return res.status(403).json({
+                success: false,
+                message: "Forbidden Access - Admins Only"
+            })
+        }
+
+        next();
+    } catch (error) {
+        console.error("Error checking admin role:", error);
+        return res.status(500).json({
+            success: false,
+            error: error
+        })
+    }
+}
+
+export { authMiddleware, checkAdmin }
