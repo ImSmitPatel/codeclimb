@@ -7,7 +7,18 @@ const getJudge0LanguageId = (language) => {
         "JAVASCRIPT": 63,
     };
 
-    return languageMap[language.toUpperCase()];
+    return languageMap[language.toUpperCase()] || null;
+}
+
+const getLanguageName = (languageId) => {
+    const languageMap = {
+        71: "PYTHON",
+        62: "JAVA",
+        63: "JAVASCRIPT",
+    };
+
+    return languageMap[languageId] || "UNKNOWN";
+
 }
 
 const submitBatch = async (submissions) => {
@@ -46,5 +57,6 @@ const pollBatchResults = async (tokens) => {
 export {
     getJudge0LanguageId,
     submitBatch,
-    pollBatchResults
+    pollBatchResults,
+    getLanguageName
 }
