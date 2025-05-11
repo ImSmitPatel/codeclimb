@@ -10,10 +10,13 @@ const updatePlaylistById = async (req, res) => {};
 
 const deletePlaylistById = async (req, res) => {};
 
+const deleteProblemFromPlaylist = async (req, res) => {};
+
 export {
     getAllPlaylists,
     getPlaylistById,
     createPlaylist,
     updatePlaylistById,
-    deletePlaylistById
+    deletePlaylistById,
+    deleteProblemFromPlaylist
 }
