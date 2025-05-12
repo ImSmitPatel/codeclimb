@@ -307,6 +307,7 @@ const getAllProblemsSolvedByUser = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: "Problems fetched successfully",
+            problemsCount: problems.length,
             problems: problems
         })
     } catch (error) {
