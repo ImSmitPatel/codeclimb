@@ -13,6 +13,7 @@ const getAllSubmissions = async (req, res) => {
         res.status(200).json({
             success: true,
             message: "Submissions fetched successfully",
+            count: submissions.length,
             submissions: submissions
         });
 
@@ -27,7 +28,7 @@ const getAllSubmissions = async (req, res) => {
     }
 };
 
-const getSubmissionForProblem = async (req, res) => {
+const getSubmissionForProblemForUser = async (req, res) => {
     try {
         const userId = req.user.id;
         const problemId = req.params.problemId;
@@ -42,6 +43,7 @@ const getSubmissionForProblem = async (req, res) => {
         res.status(200).json({
             success: true,
             message: "Submissions fetched successfully",
+            count: submissions.length,
             submissions: submissions
         });
     } catch (error) {
@@ -80,6 +82,6 @@ const getSubmissionCountForProblem = async (req, res) => {
 
 export {
     getAllSubmissions,
-    getSubmissionForProblem,
+    getSubmissionForProblemForUser,
     getSubmissionCountForProblem
 }
