@@ -8,8 +8,8 @@ playlistRoutes.get("/get-all-playlists", authMiddleware, getAllPlaylists);
 playlistRoutes.get("/get-playlist/:playlistId", authMiddleware, getPlaylistById);
 playlistRoutes.post("/create-playlist", authMiddleware, createPlaylist);
 playlistRoutes.put("/update-playlist/:playlistId", authMiddleware, updatePlaylistById);
-playlistRoutes.post("/:playlistId/add-problem/:problemId", authMiddleware, addProblemToPlaylist);
+playlistRoutes.post("/:playlistId/add-problem", authMiddleware, addProblemToPlaylist);
 playlistRoutes.delete("/delete-playlist/:playlistId", authMiddleware, deletePlaylistById);
-playlistRoutes.delete("/:playlistId/delete-problem/:problemId", authMiddleware, deleteProblemFromPlaylist);
+playlistRoutes.delete("/:playlistId/delete-problem", authMiddleware, deleteProblemFromPlaylist);
 
 export default playlistRoutes;
