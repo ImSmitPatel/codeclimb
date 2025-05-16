@@ -10,12 +10,7 @@ const executeCode = async (req, res) => {
         const userId = req.user.id;
 
         // valid testcases
-        if (
-            !Array.isArray(stdin) ||
-            stdin.length === 0 ||
-            !Array.isArray(expected_outputs) ||
-            expected_outputs.length !== stdin.length
-        ) {
+        if (!Array.isArray(stdin) || stdin.length === 0 || !Array.isArray(expected_outputs) || expected_outputs.length !== stdin.length) {
             return res.status(400).json({
                 success: false,
                 message: "Invalid or missing testcases"
