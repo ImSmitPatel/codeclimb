@@ -4,6 +4,7 @@ import cookieParser from "cookie-parser";
 import rateLimit from "express-rate-limit";
 import swaggerUi from "swagger-ui-express";
 import swaggerJsdoc from "swagger-jsdoc";
+import cors from "cors";
 
 import authRoutes from "./routes/auth.routes.js";
 import problemRoutes from "./routes/problem.routes.js";
@@ -38,6 +39,12 @@ const swaggerOptions = {
 };
 const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
+app.use(cors(
+    {
+        origin: [process.env.CLIENT_URL],
+        credentials: true
+    }
+));
 app.use(express.json());
 app.use(cookieParser());
 app.use(limiterConfig);
