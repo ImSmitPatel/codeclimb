@@ -3,9 +3,10 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Link } from 'react-router-dom'
-import { Code, Eye, EyeOff, Loader2, Lock, Mail} from 'lucide-react'
+import { Code, Eye, EyeOff, Loader, Loader2, Lock, Mail} from 'lucide-react'
 
 import CodeBackground from '../components/AuthImagePattern'
+import { useAuthStore } from '../store/useAuthStore'
 
 const signUpSchema = z.object({
   name: z.string().min(3, "Name must be at least 3 characters").nonempty("Name is required"),
@@ -16,6 +17,8 @@ const signUpSchema = z.object({
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
+  const {signUp, isSigninUp} = useAuthStore()
+
   const {
     register,
     handleSubmit,
@@ -25,7 +28,12 @@ const SignUpPage = () => {
   })
 
   const onSubmit = async(data) => {
-    console.log(data);
+    try {
+      await signUp(data),
+      console.log("signup data", data)
+    } catch (error) {
+      console.error("Error signing up", error)
+    }
   }
 
   return (
@@ -130,8 +138,17 @@ const SignUpPage = () => {
             <button
               type="submit"
               className="btn btn-primary w-full"
+              disabled={isSigninUp}
             >
-              Sign Up
+              {isSigninUp ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  "Sign Up"
+                )
+              }
             </button>
           </form>
 

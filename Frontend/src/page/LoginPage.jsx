@@ -1,11 +1,12 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 import { Code, Eye, EyeOff, Loader2, Lock, Mail} from 'lucide-react'
 
 import CodeBackground from '../components/AuthImagePattern'
+import { useAuthStore } from '../store/useAuthStore'
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email").nonempty("Email is required"),
@@ -14,6 +15,9 @@ const loginSchema = z.object({
 
 const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
+  const navigate = useNavigate()
+
+  const {login, isLoggingIn, authUser} = useAuthStore()
 
   const {
     register,
@@ -24,8 +28,19 @@ const LoginPage = () => {
   })
 
   const onSubmit = async(data) => {
-    console.log(data);
+    try {
+      await login(data),
+      console.log("login data", data)
+    } catch (error) {
+      console.error("Error logging in", error)
+    }
   }
+
+  useEffect(() => {
+    if (authUser) {
+      navigate('/')
+    }
+  }, [authUser, navigate])
 
   return (
     <div className='h-screen grid lg:grid-cols-2'>
@@ -106,8 +121,17 @@ const LoginPage = () => {
             <button
               type="submit"
               className="btn btn-primary w-full"
+              disabled={isLoggingIn}
             >
-              Login
+              {isLoggingIn ? (
+                  <>
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                    Loading...
+                  </>
+                ) : (
+                  "Log In"
+                )
+              }
             </button>
           </form>
 
