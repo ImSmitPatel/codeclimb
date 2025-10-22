@@ -56,7 +56,7 @@ const createProblem = async (req, res) => {
 
                 if(result.status.id !== 3) {
                     return res.status(400).json({
-                        error: `Testcase ${i + 1} failed for language ${language}`,
+                        message: `Testcase ${i + 1} failed for language ${language}`,
                     });
                 }
             }
@@ -95,7 +95,17 @@ const createProblem = async (req, res) => {
 const getAllProblems = async (req, res) => {
 
     try {
-        const problems = await db.Problem.findMany();
+        const problems = await db.Problem.findMany(
+            {
+                include:{
+                    solvedBy:{
+                        where: {
+                            userId: req.user.id
+                        }
+                    }
+                }
+            }
+        );
 
         if (!problems) {
             return res.status(404).json({
@@ -107,7 +117,7 @@ const getAllProblems = async (req, res) => {
         res.status(200).json({
             success : true,
             message: "Problems fetched successfully",
-            data: problems
+            problems: problems
         });
 
     } catch (error) {
@@ -139,7 +149,7 @@ const getProblemById = async (req, res) => {
         return res.status(200).json({
             success: true,
             message: `Problem with id ${id} fetched successfully`,
-            data: problem
+            problem: problem
         })
     } catch (error) {
         console.error(`Error fetching problem with id ${id}: \n`, error);
