@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Link, useNavigate } from 'react-router-dom'
-import { Code, Eye, EyeOff, Loader2, Lock, Mail} from 'lucide-react'
+import { Code, Eye, EyeOff, Loader2, Lock, Mail } from 'lucide-react'
 
 import CodeBackground from '../components/AuthImagePattern'
 import { useAuthStore } from '../store/useAuthStore'
@@ -17,7 +17,7 @@ const LoginPage = () => {
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate()
 
-  const {login, isLoggingIn, authUser} = useAuthStore()
+  const { login, isLoggingIn, authUser } = useAuthStore()
 
   const {
     register,
@@ -27,9 +27,11 @@ const LoginPage = () => {
     resolver: zodResolver(loginSchema)
   })
 
-  const onSubmit = async(data) => {
+  const onSubmit = async (data) => {
     try {
-      await login(data),
+      console.log("Before login:", authUser)
+      await login(data)
+      console.log("After login:", authUser)
       console.log("login data", data)
     } catch (error) {
       console.error("Error logging in", error)
@@ -59,7 +61,7 @@ const LoginPage = () => {
 
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            
+
             {/* Email */}
             <div className="form-control">
               <label className="label">
@@ -72,9 +74,8 @@ const LoginPage = () => {
                 <input
                   type="email"
                   {...register("email")}
-                  className={`input input-bordered w-full pl-10 ${
-                    errors.email ? "input-error" : ""
-                  }`}
+                  className={`input input-bordered w-full pl-10 ${errors.email ? "input-error" : ""
+                    }`}
                   placeholder="you@example.com"
                 />
               </div>
@@ -95,9 +96,8 @@ const LoginPage = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
-                  className={`input input-bordered w-full pl-10 ${
-                    errors.password ? "input-error" : ""
-                  }`}
+                  className={`input input-bordered w-full pl-10 ${errors.password ? "input-error" : ""
+                    }`}
                   placeholder="••••••••"
                 />
                 <button
@@ -124,13 +124,13 @@ const LoginPage = () => {
               disabled={isLoggingIn}
             >
               {isLoggingIn ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    Loading...
-                  </>
-                ) : (
-                  "Log In"
-                )
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                "Log In"
+              )
               }
             </button>
           </form>
@@ -148,8 +148,8 @@ const LoginPage = () => {
       </div>
 
       <CodeBackground
-        title = {"Welcome to CodeClimb"}
-        subtitle = {"Log in to your account, Don't have an account? Create one now!"}
+        title={"Welcome to CodeClimb"}
+        subtitle={"Log in to your account, Don't have an account? Create one now!"}
       />
 
     </div>
