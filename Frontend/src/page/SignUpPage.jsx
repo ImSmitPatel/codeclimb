@@ -3,7 +3,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import { z } from 'zod'
 import { Link } from 'react-router-dom'
-import { Code, Eye, EyeOff, Loader, Loader2, Lock, Mail} from 'lucide-react'
+import { Code, Eye, EyeOff, Loader, Loader2, Lock, Mail } from 'lucide-react'
 
 import CodeBackground from '../components/AuthImagePattern'
 import { useAuthStore } from '../store/useAuthStore'
@@ -17,7 +17,7 @@ const signUpSchema = z.object({
 const SignUpPage = () => {
   const [showPassword, setShowPassword] = useState(false);
 
-  const {signUp, isSigninUp} = useAuthStore()
+  const { signUp, isSigninUp } = useAuthStore()
 
   const {
     register,
@@ -27,10 +27,10 @@ const SignUpPage = () => {
     resolver: zodResolver(signUpSchema)
   })
 
-  const onSubmit = async(data) => {
+  const onSubmit = async (data) => {
     try {
       await signUp(data),
-      console.log("signup data", data)
+        console.log("signup data", data)
     } catch (error) {
       console.error("Error signing up", error)
     }
@@ -46,14 +46,14 @@ const SignUpPage = () => {
               <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center group-hover:bg-primary/20 transition-colors">
                 <Code className="w-6 h-6 text-primary" />
               </div>
-              <h1 className="text-2xl font-bold mt-2">Welcome </h1>
-              <p className="text-base-content/60">Sign Up to your account</p>
+              <h1 className="text-2xl font-bold mt-2">Welcome</h1>
+              <p className="text-base-content/60">Create your account</p>
             </div>
           </div>
 
           {/* Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
-            
+
             {/* name */}
             <div className="form-control">
               <label className="label">
@@ -66,15 +66,14 @@ const SignUpPage = () => {
                 <input
                   type="text"
                   {...register("name")}
-                  className={`input input-bordered w-full pl-10 ${
-                    errors.name ? "input-error" : ""
-                  }`}
+                  className={`input input-bordered w-full pl-10 ${errors.name ? "input-error" : ""
+                    }`}
                   placeholder="John Doe"
                 />
               </div>
               {errors.name && (
                 <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
-              )}              
+              )}
             </div>
 
             {/* Email */}
@@ -89,9 +88,8 @@ const SignUpPage = () => {
                 <input
                   type="email"
                   {...register("email")}
-                  className={`input input-bordered w-full pl-10 ${
-                    errors.email ? "input-error" : ""
-                  }`}
+                  className={`input input-bordered w-full pl-10 ${errors.email ? "input-error" : ""
+                    }`}
                   placeholder="you@example.com"
                 />
               </div>
@@ -112,9 +110,8 @@ const SignUpPage = () => {
                 <input
                   type={showPassword ? "text" : "password"}
                   {...register("password")}
-                  className={`input input-bordered w-full pl-10 ${
-                    errors.password ? "input-error" : ""
-                  }`}
+                  className={`input input-bordered w-full pl-10 ${errors.password ? "input-error" : ""
+                    }`}
                   placeholder="••••••••"
                 />
                 <button
@@ -141,13 +138,13 @@ const SignUpPage = () => {
               disabled={isSigninUp}
             >
               {isSigninUp ? (
-                  <>
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                    Loading...
-                  </>
-                ) : (
-                  "Sign Up"
-                )
+                <>
+                  <Loader2 className="h-5 w-5 animate-spin" />
+                  Loading...
+                </>
+              ) : (
+                "Sign Up"
+              )
               }
             </button>
           </form>
@@ -165,8 +162,8 @@ const SignUpPage = () => {
       </div>
 
       <CodeBackground
-        title = {"Welcome to CodeClimb"}
-        subtitle = {"Create an account"}
+        title={"Welcome to CodeClimb"}
+        subtitle={"Create an account"}
       />
 
     </div>
