@@ -17,10 +17,15 @@ dotenv.config();
 
 const app = express();
 const limiterConfig = rateLimit({
-    windowMs: 30 * 60 * 1000, // 15 minutes
-    max: 100, // limit each IP to 100 requests per windowMs
-    message: "Too many requests from this IP, please try again after 30 minutes",
-    skip: (req) => process.env.NODE_ENV === "development"
+    windowMs: 15 * 60 * 1000, // 15 minutes
+    max: 200, // limit each IP to 100 requests per windowMs
+    standardHeaders: true,   // Return rate limit info in headers
+    legacyHeaders: false,    // Disable X-RateLimit-* headers
+    message: {
+        success: false,
+        message: "Too many requests. Please try again later."
+    },
+    skip: () => process.env.NODE_ENV === "development"
 })
 const swaggerOptions = {
     swaggerDefinition: {
@@ -32,7 +37,7 @@ const swaggerOptions = {
         },
         servers:[
             {
-                url: 'http://localhost:8080'
+                url: process.env.SERVER_URL || "http://localhost:8080"
             },
         ],
     },
@@ -42,7 +47,7 @@ const swaggerDocs = swaggerJsdoc(swaggerOptions);
 
 app.use(cors(
     {
-        origin: [process.env.CLIENT_URL],
+        origin: process.env.CLIENT_URL,
         credentials: true
     }
 ));
