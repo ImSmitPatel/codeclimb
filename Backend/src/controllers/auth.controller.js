@@ -35,8 +35,9 @@ const register = async (req, res) => {
 
         res.cookie("jwt", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV !== "development",
-            sameSite: "strict",
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            domain: process.env.NODE_ENV === "production" ? ".codeclimb.in" : "localhost",
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
 
@@ -102,8 +103,9 @@ const registerAdmin = async (req, res) => {
 
         res.cookie("jwt", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV !== "development",
-            sameSite: "strict",
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            domain: process.env.NODE_ENV === "production" ? ".codeclimb.in" : "localhost",
             maxAge: 7 * 24 * 60 * 60 * 1000
         });
 
@@ -158,8 +160,9 @@ const login = async (req, res) => {
 
         res.cookie("jwt", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV !== "development",
-            sameSite: "strict",
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            domain: process.env.NODE_ENV === "production" ? ".codeclimb.in" : "localhost",
             maxAge: 7 * 24 * 60 * 60 * 1000
         })
 
@@ -188,8 +191,9 @@ const logout = async (req, res) => {
     try {
         res.clearCookie("jwt", {
             httpOnly: true,
-            sameSite: "strict",
-            secure: process.env.NODE_ENV !== "development"
+            secure: process.env.NODE_ENV === "production",
+            sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+            domain: process.env.NODE_ENV === "production" ? ".codeclimb.in" : "localhost",
         });
         res.status(200).json({
             success: true,
