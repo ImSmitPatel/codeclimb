@@ -60,6 +60,74 @@ const register = async (req, res) => {
     }
 };
 
+const registerAdmin = async (req, res) => {
+    const { email, name, password, adminSecret } = req.body;
+
+    try {
+        // 🔐 Check admin secret
+        if (!adminSecret || adminSecret !== process.env.ADMIN_SECRET) {
+            return res.status(403).json({
+                success: false,
+                message: "Unauthorized to create admin"
+            });
+        }
+
+        const existingUser = await db.User.findUnique({
+            where: { email }
+        });
+
+        if (existingUser) {
+            return res.status(400).json({
+                success: false,
+                message: "User already exists"
+            });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newAdmin = await db.User.create({
+            data: {
+                email,
+                name,
+                password: hashedPassword,
+                role: UserRole.ADMIN
+            }
+        });
+
+        const token = jwt.sign(
+            { id: newAdmin.id, role: newAdmin.role },
+            process.env.JWT_SECRET,
+            { expiresIn: "7d" }
+        );
+
+        res.cookie("jwt", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV !== "development",
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
+
+        res.status(201).json({
+            success: true,
+            message: "Admin created successfully",
+            data: {
+                id: newAdmin.id,
+                email: newAdmin.email,
+                name: newAdmin.name,
+                role: newAdmin.role,
+                image: newAdmin.image
+            }
+        });
+
+    } catch (error) {
+        console.error("Error creating admin:", error);
+        res.status(500).json({
+            success: false,
+            message: "Error creating admin"
+        });
+    }
+};
+
 const login = async (req, res) => {
     const {email, password} = req.body;
 
@@ -155,6 +223,7 @@ const getme = async (req, res) => {
 
 export {
     register,
+    registerAdmin,
     login,
     logout,
     getme

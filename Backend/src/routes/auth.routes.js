@@ -1,5 +1,5 @@
 import express from "express";
-import { getme, login, logout, register } from "../controllers/auth.controller.js";
+import { getme, login, logout, register, registerAdmin } from "../controllers/auth.controller.js";
 import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const authRoutes = express.Router();
@@ -47,6 +47,7 @@ authRoutes.get("/", (req, res) => {
  */
 authRoutes.post("/register", register);
 
+authRoutes.post("/register-admin", registerAdmin);
 
 /**
  * @swagger

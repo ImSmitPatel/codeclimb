@@ -12,9 +12,9 @@ if (process.env.NODE_ENV !== "production") {
 async function connectToPrisma() {
     try {
         await db.$connect();
-        console.log("Connected to Prisma DB");
+        console.log("Connected to Supabase DB");
     } catch (error) {
-        console.error("Failed to connect to Prisma DB", error);
+        console.error("Failed to connect to Supabase DB", error);
     }
 }
 
